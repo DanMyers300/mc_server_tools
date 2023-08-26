@@ -6,7 +6,7 @@ import os
 import subprocess
 
 server = "mc.danmyers.net:25565"
-file = "status.json"
+file = "./status.json"
 stop_server_url = "https://z180pb1pd3.execute-api.us-east-1.amazonaws.com/Prod/mc_start_stop"
 
 def CheckStatus(server):
