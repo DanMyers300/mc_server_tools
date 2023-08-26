@@ -21,6 +21,7 @@ def OpenFile(file):
                 existing_data = []
     else:
         existing_data = []
+    return existing_data  
 
 if __name__ == "__main__":
     player_count = CheckStatus(server)
@@ -35,4 +36,3 @@ if __name__ == "__main__":
     # Write the updated data to the JSON file
     with open(file, "w") as json_file:
         json.dump(existing_data, json_file, indent=4)
-
