@@ -27,18 +27,17 @@ def OpenFile(file):
 
 def CalculateDuration(data):
     if len(data) < 2:
-        return "0 seconds"
+        return timedelta(seconds=0)
     
     last_player_count = data[-1][1]
-    same_count_duration = 0
+    same_count_duration = timedelta(seconds=0)
     for record in reversed(data):
         if record[1] == last_player_count:
-            same_count_duration += 1
+            same_count_duration += (datetime.strptime(data[-1][0], "%Y-%m-%d %H:%M:%S") - datetime.strptime(record[0], "%Y-%m-%d %H:%M:%S"))
         else:
             break
     
-    duration = datetime.strptime(data[-1][0], "%Y-%m-%d %H:%M:%S") - datetime.strptime(data[-same_count_duration][0], "%Y-%m-%d %H:%M:%S")
-    return duration
+    return same_count_duration
 
 if __name__ == "__main__":
     player_count = CheckStatus(server)
