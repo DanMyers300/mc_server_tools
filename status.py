@@ -1,11 +1,13 @@
+from datetime import datetime, timedelta
 from mcstatus import JavaServer
 import json
 import time
 import os
+import subprocess
 
 server = "mc.danmyers.net:25565"
 file = "status.json"
-
+stop_server_url = "https://z180pb1pd3.execute-api.us-east-1.amazonaws.com/Prod/mc_start_stop"
 
 def CheckStatus(server):
     server = JavaServer.lookup(server)
@@ -23,6 +25,21 @@ def OpenFile(file):
         existing_data = []
     return existing_data  
 
+def CalculateDuration(data):
+    if len(data) < 2:
+        return "0 seconds"
+    
+    last_player_count = data[-1][1]
+    same_count_duration = 0
+    for record in reversed(data):
+        if record[1] == last_player_count:
+            same_count_duration += 1
+        else:
+            break
+    
+    duration = datetime.strptime(data[-1][0], "%Y-%m-%d %H:%M:%S") - datetime.strptime(data[-same_count_duration][0], "%Y-%m-%d %H:%M:%S")
+    return duration
+
 if __name__ == "__main__":
     player_count = CheckStatus(server)
     
@@ -36,3 +53,16 @@ if __name__ == "__main__":
     # Write the updated data to the JSON file
     with open(file, "w") as json_file:
         json.dump(existing_data, json_file, indent=4)
+
+    same_count_duration = CalculateDuration(existing_data)
+    
+    if player_count == 0 and same_count_duration >= timedelta(minutes=30):
+        # Clear the status.json file
+        with open(file, "w") as json_file:
+            json_file.write("[]")
+
+        # Send the shutdown signal
+        subprocess.run(["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", '{"action": "stop"}', stop_server_url])
+        print("Server stopped due to 0 players for 30 minutes.")
+    else:
+        print(f"Duration with the same player count: {same_count_duration}")
