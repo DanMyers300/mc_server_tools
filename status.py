@@ -65,7 +65,7 @@ if __name__ == "__main__":
             json_file.write("[]")
 
         # Send the shutdown signal
-        #subprocess.run(["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", '{"action": "stop"}', stop_server_url])
+        subprocess.run(["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", '{"action": "stop"}', stop_server_url])
         print("Server stopped due to 0 players for 30 minutes.")
     else:
         print(f"Duration with the same player count: {same_count_duration}")
