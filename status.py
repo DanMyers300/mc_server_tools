@@ -31,9 +31,13 @@ def CalculateDuration(data):
     
     last_player_count = data[-1][1]
     same_count_duration = timedelta(seconds=0)
-    for record in reversed(data):
+    previous_record_time = datetime.strptime(data[-1][0], "%Y-%m-%d %H:%M:%S")
+
+    for record in reversed(data[:-1]):
+        record_time = datetime.strptime(record[0], "%Y-%m-%d %H:%M:%S")
         if record[1] == last_player_count:
-            same_count_duration += (datetime.strptime(data[-1][0], "%Y-%m-%d %H:%M:%S") - datetime.strptime(record[0], "%Y-%m-%d %H:%M:%S"))
+            same_count_duration += (previous_record_time - record_time)
+            previous_record_time = record_time
         else:
             break
     
