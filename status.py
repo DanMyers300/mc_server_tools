@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     same_count_duration = CalculateDuration(existing_data)
     
-    if player_count == 0 and same_count_duration >= timedelta(minutes=30):
+    if player_count == 0 and same_count_duration >= timedelta(minutes=15):
         # Clear the status.json file
         with open(file, "w") as json_file:
             json_file.write("[]")
