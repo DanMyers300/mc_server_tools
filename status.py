@@ -63,6 +63,10 @@ if __name__ == "__main__":
         # Clear the status.json file
         with open(file, "w") as json_file:
             json_file.write("[]")
+        
+        # Backup the server
+        backup = ['python3', '/home/admin/mc_server_tools/backup.py']
+        subprocess.Popen(cmd).wait()
 
         # Send the shutdown signal
         subprocess.run(["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", '{"action": "stop"}', stop_server_url])
