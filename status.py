@@ -65,7 +65,7 @@ if __name__ == "__main__":
             json_file.write("[]")
         
         # Backup the server
-        backup = ['python3', '/home/admin/mc_server_tools/backup.py']
+        backup = ['python3', '~/mc_server_tools/backup.py']
         subprocess.Popen(cmd).wait()
 
         # Send the shutdown signal
