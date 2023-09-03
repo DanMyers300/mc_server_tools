@@ -66,7 +66,7 @@ if __name__ == "__main__":
         
         # Backup the server
         backup = ['python3', '~/mc_server_tools/backup.py']
-        subprocess.Popen(cmd).wait()
+        subprocess.Popen(backup).wait()
 
         # Send the shutdown signal
         subprocess.run(["curl", "-X", "POST", "-H", "Content-Type: application/json", "-d", '{"action": "stop"}', stop_server_url])
